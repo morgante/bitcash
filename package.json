@@ -1,0 +1,33 @@
+{
+  "name": "bitcash",
+  "version": "0.0.0",
+  "main": "server.js",
+  "description": "$ 20/20",
+  "bugs": "https://github.com/morgante/bitcash/issues",
+  "author": {
+    "name": "Morgante Pell",
+    "email": "me@morgante.net",
+    "url": "http://morgante.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/morgante/bitcash"
+  },
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "bitcash",
+    "bitcoin",
+    "money"
+  ],
+  "dependencies": {
+    "ejs": "^1.0.0",
+    "express": "^4.8.2",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "homepage": "http://morgante.net"
+}
