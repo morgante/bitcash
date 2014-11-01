@@ -2,10 +2,12 @@ var express = require('express');
 var _ = require('lodash');
 var ejs = require('ejs');
 
+var bitcash = require('./lib/bitcash');
 var routes = require('./src/routes');
 
-var app = express();
+bitcash.test();
 
+var app = express();
 // use ejs
 app.set('view engine', 'ejs');
 
