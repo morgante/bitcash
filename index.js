@@ -1,10 +1,15 @@
 var express = require('express');
 var _ = require('lodash');
 var ejs = require('ejs');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var routes = require('./src/routes');
 
 var app = express();
+
+app.use(multer({ dest: './uploads/'}));
+
 // use ejs
 app.set('view engine', 'ejs');
 

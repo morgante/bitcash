@@ -5,6 +5,8 @@ var request = require('request');
 var chain = require('chain-node');
 var _ = require('lodash');
 
+var sendgrid = require('./sendgrid');
+
 // testing
 // chain.blockChain = 'testnet3';
 
@@ -121,10 +123,13 @@ exports.makeTransaction = function(data, cb) {
 		var id = transaction.name();
 
 		transaction.once("value", function(snapshot) {
+			sendgrid.sendSuccess(snapshot.val());
+			
 			firebase.child("users").child(btoa(data.from)).on("value", function(us) {
-				readyCheck(id);
+				// readyCheck(id);
 			});
 		});
+
 
 		cb(null, id);
 	});
