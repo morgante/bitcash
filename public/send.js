@@ -26,12 +26,14 @@
 
 	function wait() {
 		console.log('waiting now...');
+		$form.slideUp();
+		$wait.slideDown();
 	}
 
 	function check(cb) {
 		getBalance(user.address, function(err, balance) {
 			if (balance < transaction.sitoshis) {
-				alert('Sorry, you need to add more money to that wallet.')
+				alert('Sorry, you need to add more money to that wallet.');
 			} else {
 				wait();
 			}
@@ -53,11 +55,10 @@
 		$form = $('form');
 		$wif = $('#wif');
 
+		$wait = $('.waiting');
+
 		$form.submit(function(evt) {
 			evt.preventDefault();
-
-			check();
-			return;
 
 			var wif = $wif.val();
 

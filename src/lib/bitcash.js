@@ -12,14 +12,6 @@ var sendgrid = require('./sendgrid');
 
 var firebase = new Firebase("https://blinding-heat-4116.firebaseio.com/");
 
-exports.awesome = function() {
-  return 'awesome';
-};
-
-
-exports.test = function() {
-};
-
 exports.makeWallet = function() {
 	var key = bitcoin.ECKey.makeRandom();
 
@@ -83,6 +75,7 @@ function execute(transaction, from, to) {
 
 		chain.sendTransaction(hex, function(err, resp) {
 			console.log('transacted', err, resp);
+			sendgrid.sendSuccess(snapshot.val());
 		});
 	});
 }
@@ -98,6 +91,7 @@ function readyCheck(tid) {
 
 				console.log('eh', transaction, from, to);
 
+				// we should be more careful.... potential race condition here
 				if (transaction.status === "new" && from.key !== undefined && to.address !== undefined) {
 					execute(transaction, from, to);
 					firebase.child("transactions").child(tid).child("status").set("ready");
@@ -108,12 +102,17 @@ function readyCheck(tid) {
 }
 
 exports.makeTransaction = function(data, cb) {
+	if (data.from === 'cash@faceco.in' || data.to === 'cash@faceco.in') {
+		return;
+	}
+
 	centsToSitoshis(data.amount, function(err, sitoshis) {
 		var transaction = firebase.child("transactions").push({
 			from: data.from,
 			to: data.to,
 			sitoshis: sitoshis,
 			cents: data.amount,
+			subject: data.subject,
 			status: "new"
 		});
 		
@@ -123,11 +122,27 @@ exports.makeTransaction = function(data, cb) {
 		var id = transaction.name();
 
 		transaction.once("value", function(snapshot) {
-			sendgrid.sendSuccess(snapshot.val());
 			
 			firebase.child("users").child(btoa(data.from)).on("value", function(us) {
-				// readyCheck(id);
+				readyCheck(id);
 			});
+
+			firebase.child("users").child(btoa(data.to)).on("value", function(us) {
+				readyCheck(id);
+			});
+
+			firebase.child("users").child(btoa(data.from)).once("value", function(from) {
+				if (from.val().key === undefined) {
+					sendgrid.promptSender(snapshot, from);
+				}
+			});
+
+			firebase.child("users").child(btoa(data.to)).once("value", function(from) {
+				if (from.val().address === undefined) {
+					sendgrid.promptReceiver(snapshot, from);
+				}
+			});
+
 		});
 
 
