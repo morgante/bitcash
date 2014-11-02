@@ -1,7 +1,19 @@
+var bitcash = require('../lib/bitcash');
+
 module.exports = function (app) {
-	app.get('/receive', function (req, res) {
+	// bitcash.makeTransaction({
+	// 	from: 'me@morgante.net',
+	// 	to: 'morgante@cafe.com',
+	// 	amount: 100
+	// }, function(a, b) {
+	// 	console.log('transaction', a, b);
+	// });
+
+	app.get('/receive/:id', function (req, res) {
+		var id = req.params.id;
+
 		res.render('receive', {
-			transaction: 'fwf24q2tw4'
+			transaction: id
 		});
 	});
 };

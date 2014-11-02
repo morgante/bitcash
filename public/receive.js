@@ -3,10 +3,9 @@
 
 	var firebase = new Firebase("https://blinding-heat-4116.firebaseio.com/");
 
-	var users = firebase.child("users");
-	var email = 'me@morgante';
-	var userRef = users.child(btoa(email));
 	var user;
+	var uid;
+	var transaction;
 
 	var tid;
 
@@ -20,15 +19,20 @@
 		$form.slideUp();
 		$wait.slideDown();
 
-		debugger;
+		// debugger;
 		console.log(user);
 	}
 
 	function init() {
 		tid = $('[data-transaction-id]').data('transaction-id');
 
-		userRef.on('value', function(snapshot) {
-			user = snapshot.val();
+		firebase.child("transactions").child(tid).on('value', function(snapshot) {
+			transaction = snapshot.val();
+			uid = btoa(transaction.to);
+
+			firebase.child("users").child(uid).on('value', function(snapshot) {
+				user = snapshot.val();
+			});
 		});
 
 		$form = $('form');
@@ -39,9 +43,7 @@
 
 			var address = $address.val();
 
-			userRef.set({
-				address: address
-			});
+			firebase.child("users").child(uid).child("address").set(address);
 
 			wait();
 		});
