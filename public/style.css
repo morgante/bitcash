@@ -1,0 +1,43 @@
+html, body {
+	background: #348DFF;
+	color: white;
+	font-family: "Helvetica Neue",helvetica,sans-serif;
+}
+
+h3.amount {
+	color: #FFFFFF;
+	text-align: center;
+	margin: 20px 0;
+	font-size: 320px;
+	font-weight: 200;
+}
+
+form {
+	margin: 20px auto;
+	text-align: center;
+	font-size: 25px;
+}
+
+form p {
+	font-size: 18px;
+	font-weight: 200;
+	margin-bottom: 15px;
+}
+
+form .input {
+	width: 50% !important;
+}
+
+form .input.address {
+	width: 30% !important;
+}
+
+.waiting p {
+	text-align: center;
+	font-size: 25px;
+}
+
+.footer {
+	margin-top: 40px;
+	text-align: center;
+}

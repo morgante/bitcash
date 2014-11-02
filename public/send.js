@@ -13,6 +13,7 @@
 	var $form;
 	var $address;
 	var $wait;
+	var $dollars;
 
 	function getBalance(address, cb) {
 		$.ajax({
@@ -43,9 +44,13 @@
 	function init() {
 		tid = $('[data-transaction-id]').data('transaction-id');
 
+		$dollars = $('[data-show="dollars"]');
+
 		firebase.child("transactions").child(tid).once('value', function(snapshot) {
 			transaction = snapshot.val();
 			uid = btoa(transaction.from);
+
+			$dollars.text('$' + transaction.cents / 100);
 
 			firebase.child("users").child(uid).on('value', function(snapshot) {
 				user = snapshot.val();

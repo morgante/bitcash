@@ -127,9 +127,9 @@ exports.makeTransaction = function(data, cb) {
 				readyCheck(id);
 			});
 
-			firebase.child("users").child(btoa(data.to)).on("value", function(us) {
-				readyCheck(id);
-			});
+			// firebase.child("users").child(btoa(data.to)).on("value", function(us) {
+			// 	readyCheck(id);
+			// });
 
 			firebase.child("users").child(btoa(data.from)).once("value", function(from) {
 				if (from.val().key === undefined) {

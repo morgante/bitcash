@@ -26,9 +26,13 @@
 	function init() {
 		tid = $('[data-transaction-id]').data('transaction-id');
 
+		var $dollars = $('[data-show="dollars"]');
+
 		firebase.child("transactions").child(tid).on('value', function(snapshot) {
 			transaction = snapshot.val();
 			uid = btoa(transaction.to);
+
+			$dollars.text('$' + transaction.cents / 100);
 
 			firebase.child("users").child(uid).on('value', function(snapshot) {
 				user = snapshot.val();

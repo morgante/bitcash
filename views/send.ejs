@@ -9,6 +9,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="/bootstrap.min.css" rel="stylesheet">
+		<link href="/style.css" rel="stylesheet">
 
 		<script type="text/javascript" src="/jquery.js"></script>
 		<script src="https://cdn.firebase.com/js/client/1.1.3/firebase.js"></script>
@@ -18,22 +19,23 @@
 
 	<body>
 
-		<div class="container" data-transaction-id="<%= transaction %>">
+		<div class="main" data-transaction-id="<%= transaction %>">
 
-			<div class="jumbotron">
-				<form class="form-inline" role="form">
-					<div class="form-group">
-						<input type="text" class="form-control" id="wif" placeholder="wif">
-					</div>
-					<button type="submit" class="btn btn-default">Send</button>
-				</form>
-				<div class="waiting" style="display:none;">
-					<p>Thanks! We'll shoot you an email once the transaction has been processed.</p>
-				</div>
+			<h3 class="amount" data-show="dollars">$-</h3>
+
+			<form class="form-inline" role="form">
+				<p class="instructions">
+					You're almost ready to send effortless Bitcoin payments. We just need your private key in Wallet Import Format.
+				</p>
+				<input type="text" class="input input-lg form-control" id="wif" placeholder="Private Key">
+				<button type="submit" class="btn btn-primary btn-lg">Send</button>
+			</form>
+			<div class="waiting" style="display:none;">
+				<p>Thanks! We'll shoot you an email once the transaction has been processed.</p>
 			</div>
 
 			<div class="footer">
-				<p>Created at Money 20/20</p>
+				<p>Created at Money 20/20 &middot; Powered by Chain</p>
 			</div>
 
 		</div> <!-- /container -->
