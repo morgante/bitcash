@@ -75,7 +75,7 @@ function execute(transaction, from, to) {
 
 		chain.sendTransaction(hex, function(err, resp) {
 			console.log('transacted', err, resp);
-			sendgrid.sendSuccess(snapshot.val());
+			sendgrid.sendSuccess(transaction);
 		});
 	});
 }
