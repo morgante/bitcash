@@ -24,20 +24,24 @@
 		});
 	}
 
+	function wait() {
+		console.log('waiting now...');
+	}
+
 	function check(cb) {
 		getBalance(user.address, function(err, balance) {
-			calcSitoshi(transaction.amount, function(err, sitoshi) {
-				console.log('sitoshi', sitoshi);
-			});
-
-			console.log('balance is', balance, transaction);
+			if (balance < transaction.sitoshis) {
+				alert('Sorry, you need to add more money to that wallet.')
+			} else {
+				wait();
+			}
 		});
 	}
 
 	function init() {
 		tid = $('[data-transaction-id]').data('transaction-id');
 
-		firebase.child("transactions").child(tid).on('value', function(snapshot) {
+		firebase.child("transactions").child(tid).once('value', function(snapshot) {
 			transaction = snapshot.val();
 			uid = btoa(transaction.from);
 
@@ -52,8 +56,8 @@
 		$form.submit(function(evt) {
 			evt.preventDefault();
 
-			// check();
-			// return;
+			check();
+			return;
 
 			var wif = $wif.val();
 
