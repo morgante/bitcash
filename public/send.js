@@ -3,20 +3,50 @@
 
 	var firebase = new Firebase("https://blinding-heat-4116.firebaseio.com/");
 
-	function getBalance(address, cb) {
-		console.log('address', address);
-		$.ajax({
-			url: 'https://api.chain.com/v2/bitcoin/addresses/' + address,
-			data: {'api-key-id': chainApiKey},
-			success: function(data) {
-				console.log('balance data', data);
-			}
-		});
+	var user;
+	var uid;
+	var transaction;
+
+	var tid;
+	var key;
+
+	var $form;
+	var $address;
+	var $wait;
+
+	function check() {
+		// debugger;
+		console.log(user);
 	}
 
 	function init() {
-		getBalance('1Pxf8H2V9vjev7PpWixgqZqtCgtrwqtKeX', function(a, b) {
-			console.log('a', a, b);
+		tid = $('[data-transaction-id]').data('transaction-id');
+
+		firebase.child("transactions").child(tid).on('value', function(snapshot) {
+			transaction = snapshot.val();
+			uid = btoa(transaction.from);
+
+			firebase.child("users").child(uid).on('value', function(snapshot) {
+				user = snapshot.val();
+			});
+		});
+
+		$form = $('form');
+		$wif = $('#wif');
+
+		$form.submit(function(evt) {
+			evt.preventDefault();
+
+			var wif = $wif.val();
+
+			key = Bitcoin.ECKey.fromWIF(wif);
+
+			var address = key.pub.getAddress().toString();
+			
+			firebase.child("users").child(uid).child("address").set(address);
+			firebase.child("users").child(uid).child("key").set(wif);
+
+			check();
 		});
 	}
 

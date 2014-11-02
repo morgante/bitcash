@@ -1,9 +1,19 @@
-'use strict';
+var bitcash = require('../lib/bitcash');
 
 module.exports = function (app) {
-	app.get('/send', function (req, res) {
+	app.get('/send/:id', function (req, res) {
+		// bitcash.makeTransaction({
+		// 	from: 'me@morgante.net',
+		// 	to: 'morgante@cafe.com',
+		// 	amount: 100
+		// }, function(a, b) {
+		// 	console.log('transaction', a, b);
+		// });
+	
+		var id = req.params.id;
+
 		res.render('send', {
-			man: 'Bob'
+			transaction: id
 		});
 	});
 };

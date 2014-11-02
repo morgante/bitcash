@@ -12,6 +12,16 @@ exports.awesome = function() {
 exports.test = function() {
 };
 
+exports.makeWallet = function() {
+	var key = bitcoin.ECKey.makeRandom()
+
+	// Print your private key (in WIF format)
+	console.log(key.toWIF())
+
+	// Print your public key (toString defaults to a Bitcoin address)
+	console.log(key.pub.getAddress().toString())
+};
+
 function makeUser(email) {
 	firebase.child("users").child(btoa(email)).child("email").set(email);
 }
